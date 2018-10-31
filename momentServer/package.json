@@ -1,0 +1,25 @@
+{
+  "name": "momentserver",
+  "version": "1.0.0",
+  "description": "a test project of koa",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "clown",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "jsonwebtoken": "^8.3.0",
+    "koa": "2.5.3",
+    "koa-body": "^4.0.4",
+    "koa-bodyparser": "^4.2.1",
+    "koa-cors": "^0.0.16",
+    "koa-jwt": "^3.5.1",
+    "koa-onerror": "^4.1.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "log4js": "^3.0.6",
+    "md5": "^2.2.1",
+    "monk": "^6.0.6"
+  }
+}
