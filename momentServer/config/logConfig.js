@@ -3,6 +3,11 @@ var path = require('path');
 //日志根目录
 var baseLogPath = path.resolve(__dirname, '../logs')
 
+//info日志
+var infoPath = "/info";
+var infoFileName = "info";
+var infoLogPath = baseLogPath + infoPath + "/" + infoFileName;
+
 //错误日志目录
 var errorPath = "/error";
 //错误日志文件名
@@ -19,37 +24,57 @@ var responseFileName = "response";
 var responseLogPath = baseLogPath + responsePath + "/" + responseFileName;
 //var responseLogPath = path.resolve(__dirname, "../logs/response/response");
 module.exports = {
-　　//日志格式等设置
-    appenders:
-    {
-        "rule-console": {"type": "console"},
+    //日志格式等设置
+    appenders: {
+        "rule-console": {
+            "type": "console"
+        },
         "errorLogger": {
             "type": "dateFile",
             "filename": errorLogPath,
             "pattern": "-yyyy-MM-dd.log",
             "alwaysIncludePattern": true,
-            "encoding":"utf-8",
+            "encoding": "utf-8",
             "maxLogSize": 1000,
             "numBackups": 3,
-            "path":errorPath
+            "path": errorPath
         },
         "resLogger": {
             "type": "dateFile",
             "filename": responseLogPath,
             "pattern": "-yyyy-MM-dd.log",
             "alwaysIncludePattern": true,
-            "encoding":"utf-8",
+            "encoding": "utf-8",
             "maxLogSize": 1000,
             "numBackups": 3,
-            "path":responsePath
+            "path": responsePath
         },
+        "infoLogger": {
+            "type": "file",
+            "filename": "logs/pub/pub.log",
+            "encoding": "utf-8",
+            "maxLogSize": 1000,
+            "numBackups": 3,
+        }
     },
- 　　//供外部调用的名称和对应设置定义
+    //供外部调用的名称和对应设置定义
     categories: {
-        "default": {"appenders": ["rule-console"], "level": "all"},
-        "resLogger": {"appenders": ["resLogger"], "level": "info"},
-        "errorLogger": {"appenders": ["errorLogger"], "level": "error"},
-        "http": {"appenders": ["resLogger"],"level": "info"}
+        "default": {
+            "appenders": ["rule-console","infoLogger"],
+            "level": "all"
+        },
+        "resLogger": {
+            "appenders": ["resLogger"],
+            "level": "info"
+        },
+        "errorLogger": {
+            "appenders": ["errorLogger"],
+            "level": "error"
+        },
+        "http": {
+            "appenders": ["resLogger"],
+            "level": "info"
+        }
     },
-    "baseLogPath": baseLogPath 
+    "baseLogPath": baseLogPath
 }

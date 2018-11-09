@@ -14,11 +14,13 @@ import {
   XInput,
   XTextarea,
   Group,
-  XButton
+  XButton,
+  LoadingPlugin
 } from 'vux'
 
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
+Vue.use(LoadingPlugin)
 Vue.component('x-input', XInput)
 Vue.component('x-textarea', XTextarea)
 Vue.component('group', Group)

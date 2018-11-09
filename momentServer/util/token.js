@@ -22,7 +22,7 @@ module.exports = {
     */
     async check_token(ctx, next) {
         let url = ctx.url;
-        log.debug(url);
+        log.info(url);
         if (ctx.request.method != 'GET' && !URL_YES_PASS.includes(url)) {
             let token = ctx.get("Authorization");
             if (token == '') {

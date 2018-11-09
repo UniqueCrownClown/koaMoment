@@ -11,7 +11,7 @@ const writeBase64 = require('../util/write')
 const login = async (ctx, next) => {
     let params = ctx.request.body;
 
-    log.debug("登录参数:" + params);
+    log.info("登录参数:" + params);
 
     var username = params.username;
     var password = params.password;
@@ -60,7 +60,7 @@ const login = async (ctx, next) => {
 const register = async (ctx, next) => {
     let params = ctx.request.body;
 
-    log.debug("注册参数:" + params);
+    log.info("注册参数:" + params);
 
     var username = params.username;
     var pwd = params.password;
@@ -136,7 +136,7 @@ const postImage = async (ctx, next) => {
             code: 200,
             msg: '发送成功 ！',
         };
-        log.debug('写入完成');
+        log.info('写入完成');
     });
     reader.on('error', function (err) {
         log.error(err.stack)

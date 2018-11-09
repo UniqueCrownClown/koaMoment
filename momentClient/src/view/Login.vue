@@ -18,7 +18,8 @@
     </group>
     <div style="padding:15px;">
       <x-button type="primary"
-                @click.native="handleLogin">登录</x-button>
+                @click.native="handleLogin"
+                class="moment-login">登录</x-button>
     </div>
     <div class="toBottom">
       <card>
@@ -34,6 +35,7 @@
 </template>
 <script>
 import { Card } from "vux"
+import { md5 } from 'vux'
 import { login } from "../api"
 import { mapMutations, mapState, mapGetters } from "vuex"
 import config from '../config'
@@ -61,7 +63,7 @@ export default {
     async handleLogin () {
       let params = new URLSearchParams();
       params.append("username", this.loginForm.account);
-      params.append("password", this.loginForm.checkPass);
+      params.append("password", md5(this.loginForm.checkPass));
       let responseValue = await login(params);
       let { status, data } = responseValue;
       if (status !== 200) {
@@ -85,7 +87,9 @@ export default {
 </script>
 <style lang="less" scoped>
 @import '~vux/src/styles/close.less';
-
+.moment-login {
+  cursor: pointer;
+}
 .popup0 {
   padding-bottom: 15px;
   height: 200px;

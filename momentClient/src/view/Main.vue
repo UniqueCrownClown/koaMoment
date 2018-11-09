@@ -5,7 +5,8 @@
         <div>
           <x-icon type="ios-arrow-left"
                   size="30"
-                  class="main-back-btn"></x-icon>
+                  class="main-back-btn"
+                  @click="handleBackLogin"></x-icon>
           <x-icon type="ios-ionic-outline"
                   size="30"
                   class="main-refresh-btn"
@@ -73,8 +74,15 @@ export default {
       }
       this.momentData = data.data.momentData;
     },
+    handleBackLogin () {
+      this.$router.push(`/`);
+    }
   },
   async mounted () {
+    // 显示
+    this.$vux.loading.show({
+      text: 'Loading'
+    })
     //要去查询所有的moment回来
     const responseValue = await allMoment();
     let { status, data } = responseValue;
@@ -88,6 +96,8 @@ export default {
         this.momentData = data.data;
       }
     }
+    // 隐藏
+    this.$vux.loading.hide()
   },
   computed: {
     ...mapState(["loginMan"])

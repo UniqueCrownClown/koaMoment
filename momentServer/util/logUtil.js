@@ -28,7 +28,6 @@ logUtil.logResponse = function (ctx, resTime) {
 
 logUtil.logInfo = function (info) {
     if (info) {
-       
         consoleLogger.info( formatInfo(info));
     }
 };

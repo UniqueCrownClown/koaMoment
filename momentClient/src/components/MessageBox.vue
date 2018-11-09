@@ -11,7 +11,8 @@
         <div class="message-picList">
           <div class="message-picItem"
                v-for="(item,index) in momentItem.imageList"
-               :key="index">
+               :key="index"
+                @click="handleImgShow(item)">
             <img class="message-img"
                  :src="item|getPath" />
           </div>
@@ -24,6 +25,16 @@
       </div>
     </div>
     <CommentInput></CommentInput>
+    <x-dialog v-model="show"
+              class="dialog-demo">
+      <div class="img-box">
+        <img :src="currentImagePath"
+             style="max-width:100%">
+      </div>
+      <div @click="show=false">
+        <span class="vux-close"></span>
+      </div>
+    </x-dialog>
   </div>
 </template>
 
@@ -33,21 +44,30 @@ import { mapMutations, mapState } from "vuex"
 import CommentBox from "@/components/CommentBox"
 import AdmireBox from "@/components/AdmireBox"
 import CommentInput from "@/components/CommentInput"
+import { XDialog } from 'vux'
 export default {
   name: "MessageBox",
   props: ["cmomentData"],
   components: {
     CommentInput,
     CommentBox,
-    AdmireBox
+    AdmireBox,
+    XDialog
   },
   data () {
     return {
       showCommentInput: false,
-      commentData: {}
+      commentData: {},
+      show: false,
+      currentImagePath:""
     }
   },
   methods: {
+    handleImgShow (value) {
+      this.show = true;
+      console.log(value);
+      this.currentImagePath = Util.getrealPicPath(value);
+    }
   },
   computed: {
     ...mapState(["loginMan"]),
@@ -60,13 +80,15 @@ export default {
     getPath (value) {
       return Util.getrealPicPath(value)
     },
-    orderByData(value) {
+    orderByData (value) {
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+@import '~vux/src/styles/close';
+
 .messageBox {
   display: flex;
   .messageBox-left {
@@ -111,6 +133,25 @@ export default {
         text-align: left;
       }
     }
+  }
+}
+.dialog-demo {
+  .weui-dialog{
+    border-radius: 8px;
+    padding-bottom: 8px;
+    max-width: 600px;
+  }
+  .dialog-title {
+    line-height: 30px;
+    color: #666;
+  }
+  .img-box {
+    height: 350px;
+    overflow: hidden;
+  }
+  .vux-close {
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
 }
 </style>

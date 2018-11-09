@@ -8,7 +8,7 @@ const log = require('log4js').getLogger("moment")
 const addMoment = async (ctx, next) => {
 
     let params = ctx.request.body;
-    log.debug("addMoment参数:" + params);
+    log.info("addMoment参数:" + params);
 
     let username = params.username;
     let message = params.message;
@@ -36,7 +36,7 @@ const addMoment = async (ctx, next) => {
                 message: message,
                 imageList: [itemPath]
             });
-            log.debug("第一片插库成功");
+            log.info("第一片插库成功");
         } else {
             db.moments.update({
                 momentId: momentId
@@ -77,14 +77,14 @@ const addMoment = async (ctx, next) => {
 
 const deleteMoment = async (ctx, next) => {
 
-    log.debug("deleteMoment参数:" + ctx.params);
+    log.info("deleteMoment参数:" + ctx.params);
     let momentId = ctx.params.momentId;
 
     try {
         const success = await db.moments.remove({
             momentId: momentId
         });
-        log.debug("删除moment成功");
+        log.info("删除moment成功");
         ctx.body = {
             code: 200,
             msg: "删除成功!"

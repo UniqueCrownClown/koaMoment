@@ -3,7 +3,7 @@ const log = require('log4js').getLogger("admire")
 
 const setAdmire = async (ctx, next) => {
   let params = ctx.request.body;
-  log.debug("setAdmire参数:" + params);
+  log.info("setAdmire参数:" + params);
 
   var username = params.username;
   var momentid = params.momentid;
@@ -42,7 +42,7 @@ const setAdmire = async (ctx, next) => {
 
 const removeAdmire = async (ctx, next) => {
   let params = ctx.request.body;
-  log.debug("removeAdmire参数:" + params);
+  log.info("removeAdmire参数:" + params);
 
   var username = params.username;
   var momentid = params.momentid;

@@ -82,6 +82,7 @@
 </template>
 <script>
 import { register, postImage } from "../api";
+import { md5 } from 'vux'
 import VueCropper from "vue-cropper";
 export default {
   name: "Register",
@@ -117,7 +118,7 @@ export default {
       let params = new URLSearchParams();
       params.append("username", this.registerForm.account);
       params.append("email", this.registerForm.email);
-      params.append("password", this.registerForm.checkPass);
+      params.append("password", md5(this.registerForm.checkPass));
       let avatarTemp =
         this.registerForm.avatar.substring(
           this.registerForm.avatar.length - 3

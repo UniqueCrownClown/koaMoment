@@ -52,8 +52,9 @@ export default {
     } else {
       if (data.code != 200) {
         Util.info(this, data.msg);
+        return;
       } else {
-        Util.info(this, data.data);
+        // Util.info(this, data.data);
         this.commentList = data.data;
         this.commentList.forEach(element => {
           if (element.belong === "" && element.target === "") {
