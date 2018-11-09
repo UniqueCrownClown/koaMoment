@@ -9,6 +9,14 @@ const state = {
     username: window.sessionStorage.getItem('username') || 'default',
     token: window.sessionStorage.getItem('token') || '',
     avatar: window.sessionStorage.getItem('avatar') || ''
+  },
+  commentInput: false,
+  currentmomentId: "",
+  currentCommentData: {
+    momentid: "",
+    belong: "",
+    source: "",
+    target: ""
   }
 }
 
@@ -34,6 +42,18 @@ const mutations = {
     window.sessionStorage.removeItem('token')
     window.sessionStorage.removeItem('username')
     window.sessionStorage.removeItem('avatar')
+  },
+  saveComment: (state, data) => {
+    state.currentCommentData.momentid = data.momentid;
+    state.currentCommentData.belong = data.belong;
+    state.currentCommentData.source = data.source;
+    state.currentCommentData.target = data.target;
+  },
+  setCommentInput: (state, data) => {
+    state.commentInput = data;
+  },
+  setcurrentmomentId: (state, data) => {
+    state.currentmomentId = data;
   }
 }
 

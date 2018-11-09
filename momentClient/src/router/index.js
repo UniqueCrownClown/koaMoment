@@ -6,7 +6,8 @@ import Login from '@/view/Login'
 import Main from '@/view/Main'
 import WriteMoment from '@/view/WriteMoment'
 import MessageBox from '@/components/MessageBox'
-
+import CommentBox from '@/components/CommentBox'
+import CommentInput from '@/components/CommentInput'
 
 Vue.use(Router)
 
@@ -38,6 +39,16 @@ const router = new Router({
       path: '/main/write',
       name: 'WriteMoment',
       component: WriteMoment
+    },
+    {
+      path: '/commentBox',
+      name: 'CommentBox',
+      component:CommentBox
+    },
+    {
+      path: '/commentInput',
+      name: 'CommentInput',
+      component:CommentInput
     }
   ]
 })

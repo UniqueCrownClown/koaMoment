@@ -23,17 +23,18 @@ const addMoment = async (ctx, next) => {
     writeBase64(filePath, imageData);
     let itemPath = path.join(username, momentId, current + '.png');
     let time = new Date().toLocaleString();
-
     try {
+        const doc = await db.users.findOne({
+            username: username
+        });
         if (current === "1") {
-
             const success = await db.moments.insert({
                 momentId: momentId,
                 time: time,
                 ownner: username,
+                avatar: doc.avatar,
                 message: message,
-                imageList: [itemPath],
-                admire: []
+                imageList: [itemPath]
             });
             log.debug("第一片插库成功");
         } else {
@@ -72,33 +73,29 @@ const addMoment = async (ctx, next) => {
             msg: 'moment发表失败,服务器异常!'
         }
     }
-
-
 }
 
 const deleteMoment = async (ctx, next) => {
 
     log.debug("deleteMoment参数:" + ctx.params);
-    let id = ctx.params.momentId;
+    let momentId = ctx.params.momentId;
 
     try {
         const success = await db.moments.remove({
-            _id: id
+            momentId: momentId
         });
-        console.log(success);
+        log.debug("删除moment成功");
         ctx.body = {
             code: 200,
             msg: "删除成功!"
         }
     } catch (e) {
+        log.error("删除moment失败" + e);
         ctx.body = {
             code: 500,
             msg: "删除失败!"
         }
     }
-
-
-
 }
 
 const getMoment = async (ctx, next) => {
@@ -110,9 +107,8 @@ const getMoment = async (ctx, next) => {
         ctx.body = {
             code: 200,
             msg: "查询成功!",
-            data: {
-                docs
-            }
+            data: docs
+
         }
     } else {
         //查询所有的document出来
@@ -120,86 +116,15 @@ const getMoment = async (ctx, next) => {
         ctx.body = {
             code: 200,
             msg: "查询成功!",
-            data: {
-                docs
-            }
-        }
-    }
-
-}
-
-const setAdmire = async (ctx, next) => {
-    let params = ctx.request.body;
-    console.info(params);
-
-    var username = params.username;
-    var momentid = params.momentid;
-    try {
-        var docs = await db.moments.findOne({
-            id: momentid
-        });
-        console.log(docs);
-        if (docs != null) {
-            db.moments.update({
-                id: momentid
-            }, {
-                "$push": {
-                    "admire": username
-                }
-            });
-            ctx.body = {
-                code: 200,
-                msg: "点赞成功!"
-            }
-        }
-    } catch (e) {
-        ctx.body = {
-            code: 500,
-            msg: "服务器异常请稍后再试!"
-        }
-    }
-
-}
-
-const removeAdmire = async () => {
-    let params = ctx.request.body;
-    console.info(params);
-
-    var username = params.username;
-    var momentid = params.momentid;
-    try {
-        var docs = await db.moments.findOne({
-            id: momentid
-        });
-        console.log(docs);
-        if (docs != null) {
-            db.moments.update({
-                id: momentid
-            }, {
-                "$push": {
-                    "admire": username
-                }
-            });
-            ctx.body = {
-                code: 200,
-                msg: "取消点赞成功!"
-            }
-        }
-    } catch (e) {
-        ctx.body = {
-            code: 500,
-            msg: "服务器异常请稍后再试!"
+            data: docs
         }
     }
 }
-
 
 const moment = {
     addMoment: addMoment,
     deleteMoment: deleteMoment,
-    getMoment: getMoment,
-    setAdmire: setAdmire,
-    removeAdmire: removeAdmire
+    getMoment: getMoment
 }
 
 module.exports = moment

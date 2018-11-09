@@ -34,21 +34,29 @@ let cType = {
   }
 }
 
-
-export const login = params => instance.post(`${config.IP}:${config.PORT}/api/user/login`, params) // 用户登录
-
-export const register = params => instance.post(`${config.IP}:${config.PORT}/api/user`, params) // 用户注册
-
-export const allMomment = () => instance.get(`${config.IP}:${config.PORT}/api/user/moment`) // 获取所有的comment
-
-export const getMomment = () => instance.get(`${config.IP}:${config.PORT}/api/user/getmoment`) // 获取某个用户的comment
-
-export const addMoment = params => instance.post(`${config.IP}:${config.PORT}/api/user/addmoment`, params) // 用户发表moment
-
-export const delMoment = params => instance.post(`${config.IP}:${config.PORT}/api/user/delmoment`, params) // 用户moment
-
-export const postImage = params => instance.post(`${config.IP}:${config.PORT}/api/user/postImage`, params, cType) //用formData上送图片
-
-export const setAdmire = params => instance.post(`${config.IP}:${config.PORT}/api/user/setAdmire`, params) //点赞
-
-export const delAdmire = params => instance.post(`${config.IP}:${config.PORT}/api/user/delAdmire`, params) //取消点赞
+// 用户登录
+export const login = params => instance.post(`${config.IP}:${config.PORT}/api/user/login`, params)
+// 用户注册
+export const register = params => instance.post(`${config.IP}:${config.PORT}/api/user`, params)
+// 获取所有的comment
+export const allMoment = () => instance.get(`${config.IP}:${config.PORT}/api/user/moment`)
+//获取指定用户的comment
+export const getMoment = username => instance.get(`${config.IP}:${config.PORT}/api/user/moment?username=${username}`)
+// 用户发表moment
+export const addMoment = params => instance.post(`${config.IP}:${config.PORT}/api/user/addmoment`, params)
+// 删除moment
+export const delMoment = params => instance.post(`${config.IP}:${config.PORT}/api/user/delmoment`, params)
+//用formData上送图片
+export const postImage = params => instance.post(`${config.IP}:${config.PORT}/api/user/postImage`, params, cType)
+//获取点赞列表
+export const getAdmire = momentId => instance.get(`${config.IP}:${config.PORT}/api/user/admire?momentid=${momentId}`)
+//点赞
+export const setAdmire = params => instance.post(`${config.IP}:${config.PORT}/api/user/setadmire`, params)
+//取消点赞
+export const delAdmire = params => instance.post(`${config.IP}:${config.PORT}/api/user/deladmire`, params)
+//新增comment
+export const addComment = params => instance.post(`${config.IP}:${config.PORT}/api/user/addcomment`, params)
+//删除comment
+export const delComment = params => instance.post(`${config.IP}:${config.PORT}/api/user/delcomment`, params)
+//获取指定momentId的comment
+export const getComment = momentId => instance.get(`${config.IP}:${config.PORT}/api/user/comment?momentid=${momentId}`)

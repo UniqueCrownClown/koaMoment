@@ -6,5 +6,11 @@ module.exports = {
   // token 加密字符串
   TOKEN_ENCODE_STR: "moment",
   // 添加非get请求通过的连接
-  URL_YES_PASS: ['/api/user/login', '/api/user', '/api/user/postImage', '/api/user/addmoment']
+  URL_YES_PASS: ['/api/user/login', 
+  '/api/user',
+   '/api/user/postImage',
+    '/api/user/addmoment',
+    '/api/user/addcomment',
+  '/api/user/setadmire',
+  '/api/user/deladmire']
 }

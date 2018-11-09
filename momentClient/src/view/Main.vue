@@ -8,7 +8,8 @@
                   class="main-back-btn"></x-icon>
           <x-icon type="ios-ionic-outline"
                   size="30"
-                  class="main-refresh-btn"></x-icon>
+                  class="main-refresh-btn"
+                  @click="handleRefreshMoment"></x-icon>
         </div>
         <h3>moment</h3>
         <x-icon class="main-writebox-btn"
@@ -20,14 +21,12 @@
       <div class="main-mes">
         <span class="main-username">{{loginMan.username}}</span>
         <img class="main-avatar"
-             :src="loginMan.avatar"
+             :src="loginMan.avatar|getPath"
              alt="登录者头像">
       </div>
     </div>
     <div class="main-message-collection">
-      <MessageBox :momentItem="momentItem"
-                  v-for="(momentItem,index) in momentData"
-                  :key="index"></MessageBox>
+      <MessageBox :cmomentData="momentData"></MessageBox>
     </div>
   </div>
 </template>
@@ -35,11 +34,18 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import MessageBox from "@/components/MessageBox";
-import { allMomment } from "../api";
+import { allMoment, getMoment } from "../api";
+import Util from "../util/util"
+
 export default {
   name: "Main",
   components: {
     MessageBox
+  },
+  filters: {
+    getPath: function (value) {
+      return Util.getrealPicPath(value)
+    }
   },
   data () {
     return {
@@ -49,40 +55,39 @@ export default {
   methods: {
     handleWriteBox () {
       this.$router.push(`/main/write`);
-    }
+    },
+    async handleRefreshMoment () {
+      alert("query");
+      //查询所有moment
+      let responseValue = await getMoment("testb");
+      let { status, data } = responseValue;
+      if (status !== 200) {
+        throw data.msg || "登录异常";
+      } else {
+        if (data.code != 200) {
+          Util.info(this, data.msg);
+        } else {
+          Util.info(this, data.data);
+        }
+        return;
+      }
+      this.momentData = data.data.momentData;
+    },
   },
-  mounted () {
+  async mounted () {
     //要去查询所有的moment回来
-    const responseValue = allMomment;
+    const responseValue = await allMoment();
     let { status, data } = responseValue;
     if (status !== 200) {
       throw data.msg || "登录异常";
     } else {
       if (data.code != 200) {
-        this.$vux.alert.show({
-          title: '提示',
-          content: data.msg
-        })
+        Util.info(this, data.msg);
+      } else {
+        // Util.info(this, data.data);
+        this.momentData = data.data;
       }
-      return;
     }
-    this.momentData = data.data.momentData;
-    // this.momentData = [
-    //   {
-    //     messageId: "momentId",
-    //     messageAvatar: "/static/avatar.jpg",
-    //     messageOwner: "clown",
-    //     messageContent:
-    //       "琼楼玉宇，满人寰、似海边洲渚。蓬莱又还水浅，鲸涛静见，银宫如许。紫极鸣箫声断，望霓舟何处？待夜深、重倚层霄，认得瑶池广寒路。",
-    //     imgList: [
-    //       "/static/avatar.jpg",
-    //       "/static/avatar.jpg",
-    //       "/static/avatar.jpg"
-    //     ],
-    //     messageTime: "20180924",
-    //     admireList: ["小红", "小明"]
-    //   }
-    // ];
   },
   computed: {
     ...mapState(["loginMan"])

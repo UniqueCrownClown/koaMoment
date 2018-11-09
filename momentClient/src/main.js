@@ -7,10 +7,12 @@ import VueRouter from 'vue-router'
 import store from './store/store'
 import './assets/css/font/iconfont.css'
 
+
 import {
   AlertPlugin,
   ToastPlugin,
   XInput,
+  XTextarea,
   Group,
   XButton
 } from 'vux'
@@ -18,6 +20,7 @@ import {
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
 Vue.component('x-input', XInput)
+Vue.component('x-textarea', XTextarea)
 Vue.component('group', Group)
 Vue.component('x-button', XButton)
 

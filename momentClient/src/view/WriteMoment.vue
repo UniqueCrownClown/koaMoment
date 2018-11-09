@@ -36,8 +36,9 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations, mapGetters } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { XHeader, XTextarea } from "vux";
+import Util from '../util/util'
 import { postImage, addMoment } from "../api";
 export default {
   name: "WriteMoment",
@@ -51,11 +52,12 @@ export default {
       momentMessage: ""
     };
   },
+  computed: {
+    ...mapState(["loginMan"])
+  },
   methods: {
-    ...mapState(["loginMan"]),
     async send () {
-      alert("发表");
-      let momentId="";
+      let momentId = "";
       if (this.uploadImgList.length <= 0 || this.uploadImgList.length >= 9) {
         alert("too little or too much !!");
         return;
@@ -79,8 +81,14 @@ export default {
           throw data.msg || "发表异常";
         } else {
           if (data.code != 200) {
-            console.log(data.msg);
+            Util.info(data.msg)
             return;
+          } else {
+            if (i == total - 1) {
+              Util.info(this,data.data);
+              this.momentMessage = "";
+              this.$router.push(`/main`);
+            }
           }
         }
       }

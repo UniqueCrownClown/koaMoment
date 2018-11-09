@@ -33,10 +33,11 @@
   </div>
 </template>
 <script>
-import { Card } from "vux";
-import { login } from "../api";
-import { mapMutations, mapState, mapGetters } from "vuex";
+import { Card } from "vux"
+import { login } from "../api"
+import { mapMutations, mapState, mapGetters } from "vuex"
 import config from '../config'
+import Util from "../util/util"
 
 export default {
   name: "Login",
@@ -46,8 +47,8 @@ export default {
   data () {
     return {
       loginForm: {
-        account: "",
-        checkPass: ""
+        account: "testa",
+        checkPass: "123456"
       }
     };
   },
@@ -67,17 +68,14 @@ export default {
         throw data.msg || "登录异常";
       } else {
         if (data.code != 200) {
-          this.$vux.alert.show({
-            title: '提示',
-            content: data.msg
-          })
+          Util.info(data.msg);
           return;
         }
         this.save({
           _id: data.data.id,
           username: data.data.username,
           token: data.data.token,
-          avatar: config.IP + ":" + config.PORT + data.data.avatar
+          avatar: data.data.avatar
         });
         this.$router.push(`/main`);
       }

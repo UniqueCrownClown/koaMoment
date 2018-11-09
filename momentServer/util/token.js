@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../db').users
+const log = require('log4js').getLogger("token");
 const {
     TOKEN_ENCODE_STR,
     URL_YES_PASS
@@ -21,12 +22,15 @@ module.exports = {
     */
     async check_token(ctx, next) {
         let url = ctx.url;
-        if (ctx.method != 'GET' && !URL_YES_PASS.includes(url)) {
+        log.debug(url);
+        if (ctx.request.method != 'GET' && !URL_YES_PASS.includes(url)) {
             let token = ctx.get("Authorization");
             if (token == '') {
-                // 直接抛出错误
-                ctx.response.status = 401;
-                ctx.response.body = "还没有登录，快去登录吧!";
+                // 抛出错误
+                ctx.body = {
+                    code: 401,
+                    msg: '还没有登录，快去登录吧!',
+                };
                 return;
             }
             try {
@@ -43,13 +47,18 @@ module.exports = {
                     token
                 });
                 if (res.length == 0) {
-                    ctx.response.status = 401;
-                    ctx.response.body = "登录过期，请重新登录!";
+                    ctx.body = {
+                        code: 401,
+                        msg: '登录过期，请重新登录!',
+                    };
                     return;
                 }
             } catch (e) {
-                ctx.response.status = 500;
-                ctx.response.body = "服务器异常请稍后再试!";
+                log.error(e);
+                ctx.body = {
+                    code: 500,
+                    msg: '服务器异常请稍后再试!',
+                };
                 return;
             }
         }

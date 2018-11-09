@@ -9,13 +9,13 @@ db.then(() => {
 const userCollection = db.get('users')
 const momentCollection = db.get('moment')
 const commentCollection = db.get('comment') //评论主表
-const answerCollection = db.get('answer') //评论回复表
+const admireCollection = db.get('admire') //点赞表
 
 const dbcontroller = {
   users: userCollection,
   moments: momentCollection,
   comments: commentCollection,
-  answers: answerCollection
+  admires: admireCollection
 }
 
 

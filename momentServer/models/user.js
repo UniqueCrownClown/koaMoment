@@ -1,5 +1,6 @@
 const db = require('../db')
 const log = require('log4js').getLogger("user");
+const path = require('path')
 
 const {
     create_token
@@ -79,7 +80,7 @@ const register = async (ctx, next) => {
         }
         let avatarPath;
         if (avatar != "") {
-            var filePath = './public/' + username + '/avatar.png';
+            let filePath = path.join('./public', username, 'avatar.png');
             writeBase64(filePath, avatar)
             avatarPath = username;
         } else {
@@ -94,7 +95,7 @@ const register = async (ctx, next) => {
             password: pwd,
             email: email,
             token: token,
-            avatar: "/" + avatarPath + "/avatar.png"
+            avatar: path.join(avatarPath, 'avatar.png')
         });
 
         ctx.body = {
@@ -103,7 +104,7 @@ const register = async (ctx, next) => {
             data: {
                 username: username,
                 token: token,
-                avatar: getIPAdress() + ":" + LISTERN_PORT + "/" + avatarPath + "/avatar.png"
+                avatar: path.join(avatarPath + 'avatar.png')
             }
         };
     } catch (e) {

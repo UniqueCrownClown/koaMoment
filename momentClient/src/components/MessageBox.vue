@@ -1,77 +1,66 @@
 <template>
-  <div class="messageBox">
-    <div class="messageBox-left"><img :src="momentItem.messageAvatar"
-           alt=""></div>
-    <div class="messageBox-right">
-      <div class="message-owner">{{momentItem.messageOwner}}</div>
-      <div class="message-content">{{momentItem.messageContent}}</div>
-      <div class="messge-picList">
-        <div class="message-picItem"
-             v-for="(item,index) in momentItem.imgList"
-             :key="index">
-          <img class="message-img"
-               :src="item" />
-        </div>
-      </div>
-      <div class="message-toolBar">
-        <div class="message-time">{{momentItem.messageTime}}</div>
-        <div class="message-collection">
-          <i class="iconfont icon-pinglun"
-             @click="showAdmire= !showAdmire"></i>
-          <div class="message-admireBox"
-               v-show="showAdmire">
-            <i class="iconfont icon-aixin"
-               @click="admireClick">{{admireText}}</i>
-            <i class="iconfont icon-pinglun1"
-               @click="commentClick = !commentClick ;showAdmire = false">评论</i>
+  <div>
+    <div class="messageBox"
+         v-for="momentItem in getData"
+         :key="momentItem.momentId">
+      <div class="messageBox-left"><img :src="momentItem.avatar|getPath"
+             alt=""></div>
+      <div class="messageBox-right">
+        <div class="message-owner">{{momentItem.ownner}}</div>
+        <div class="message-content">{{momentItem.message}}</div>
+        <div class="message-picList">
+          <div class="message-picItem"
+               v-for="(item,index) in momentItem.imageList"
+               :key="index">
+            <img class="message-img"
+                 :src="item|getPath" />
           </div>
         </div>
-        <div class="message-comment-text"
-             v-show="commentClick">
-          <group>
-            <x-input name="commentText"
-                     placeholder="orz~~~~"
-                     v-model="commentText"
-                     class="weui-vcode">
-              <x-button slot="right"
-                        type="primary"
-                        mini>发送</x-button>
-            </x-input>
-          </group>
+        <div class="message-toolBar">
+          <div class="message-time">{{momentItem.time}}</div>
+          <AdmireBox :momentId="momentItem.momentId"></AdmireBox>
+          <CommentBox :momentId="momentItem.momentId"></CommentBox>
         </div>
       </div>
     </div>
+    <CommentInput></CommentInput>
   </div>
 </template>
 
 <script>
-import { setAdmire, delAdmire } from "../api"
+import Util from '../util/util'
 import { mapMutations, mapState } from "vuex"
+import CommentBox from "@/components/CommentBox"
+import AdmireBox from "@/components/AdmireBox"
+import CommentInput from "@/components/CommentInput"
 export default {
   name: "MessageBox",
-  props: ["momentItem"],
-  methods: {
-    admireClick () {
-      this.showAdmire = false;
-      if (this.admireText === "赞") {
-        // let params = new URLSearchParams();
-        // params.append("username", "testb");
-        // params.append("momentId", "xxxx");
-        // let responseValue = await setAdmire(params);
-        // let { status, data } = responseValue;
-        this.admireText = "取消";
-
-      } else {
-        // let params = new URLSearchParams();
-        // params.append("username", "testb");
-        // params.append("momentId", "xxxx");
-        // let responseValue = await delAdmire(params);
-        this.admireText = "赞";
-      }
-    },
+  props: ["cmomentData"],
+  components: {
+    CommentInput,
+    CommentBox,
+    AdmireBox
   },
   data () {
     return {
+      showCommentInput: false,
+      commentData: {}
+    }
+  },
+  methods: {
+  },
+  computed: {
+    ...mapState(["loginMan"]),
+    //监听父组件的数值变化
+    getData () {
+      return this.cmomentData;
+    }
+  },
+  filters: {
+    getPath (value) {
+      return Util.getrealPicPath(value)
+    },
+    orderByData(value) {
     }
   }
 }
@@ -96,15 +85,20 @@ export default {
     .message-content {
       text-align: left;
     }
-    .messge-picList {
+    .message-picList {
       display: flex;
       justify-content: flex-start;
       flex-wrap: wrap;
       .message-picItem {
         width: 33%;
+        padding-bottom: 33%;
+        position: relative;
         img {
+          position: absolute;
+          top: 0;
+          left: 0;
           width: 100%;
-          height: auto;
+          height: 100%;
         }
       }
     }
@@ -116,47 +110,7 @@ export default {
       .message-time {
         text-align: left;
       }
-      .message-collection {
-        display: flex;
-        justify-content: flex-end;
-        height: 40px;
-        i {
-          font-size: 2rem;
-          height: inherit;
-          cursor: pointer;
-          margin: 0 10px;
-          line-height: 40px;
-        }
-        .message-admireBox {
-          display: flex;
-          justify-content: center;
-          align-content: center;
-          background-color: #2c3e50;
-          i {
-            font-size: 1rem;
-            color: #fff;
-            padding: 0 10px;
-            cursor: pointer;
-            font-weight: normal;
-            line-height: 40px;
-            &:hover {
-              color: #f55;
-            }
-          }
-        }
-      }
     }
-    //评论信息列表 start
-    .message-comment {
-      .message-admire {
-        text-align: left;
-        span {
-          padding: 0 10px;
-          cursor: pointer;
-        }
-      }
-    }
-    //评论信息列表 end
   }
 }
 </style>
