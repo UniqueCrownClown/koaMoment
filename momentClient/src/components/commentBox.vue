@@ -51,10 +51,9 @@ export default {
       throw data.msg || "查询异常";
     } else {
       if (data.code != 200) {
-        Util.info(this, data.msg);
+        //Util.info(this, data.msg);
         return;
       } else {
-        // Util.info(this, data.data);
         this.commentList = data.data;
         this.commentList.forEach(element => {
           if (element.belong === "" && element.target === "") {
@@ -67,7 +66,6 @@ export default {
     }
     //监听
     vm.$on('message', (data) => {
-      console.log(data);
       if(this.momentId ===data.momentid){
         if(data.belong ===""){
           data.isAnswer = false

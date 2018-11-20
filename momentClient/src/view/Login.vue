@@ -70,7 +70,7 @@ export default {
         throw data.msg || "登录异常";
       } else {
         if (data.code != 200) {
-          Util.info(data.msg);
+          Util.info(this,data.msg);
           return;
         }
         this.save({

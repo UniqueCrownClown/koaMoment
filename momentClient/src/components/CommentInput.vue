@@ -56,7 +56,6 @@ export default {
         } else {
           this.commentText ="";
           vm.$emit("message", data.data);
-          Util.info(this, data.data);
         }
       }
     }
