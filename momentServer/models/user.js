@@ -1,12 +1,16 @@
 const db = require('../db')
 const log = require('log4js').getLogger("user");
 const path = require('path')
+const fs = require('fs');
 
 const {
     create_token
 } = require('../util/token');
 
-const writeBase64 = require('../util/write')
+const {
+    writeBase64,
+    handleImageFile
+} = require('../util/write')
 
 const login = async (ctx, next) => {
     let params = ctx.request.body;
@@ -117,30 +121,10 @@ const register = async (ctx, next) => {
 };
 
 const postImage = async (ctx, next) => {
-    // console.log(ctx.request.files);
-    // 上传单个文件
-    const file = ctx.request.files.file; // 获取上传文件
-    // 创建可读流
-    const reader = fs.createReadStream(file.path);
-    //__dirname返回当前文件的路径
-    let filePath = './public/upload/' + `${file.name}`;
-    mkdirsSync('./public/upload');
-    console.log(filePath);
-    // 创建可写流`
-    const upStream = fs.createWriteStream(filePath);
-    // 可读流通过管道写入可写流
-    reader.pipe(upStream);
-    // 处理流事件 --> data, finish, and error
-    reader.on('finish', function () {
-        ctx.body = {
-            code: 200,
-            msg: '发送成功 ！',
-        };
-        log.info('写入完成');
-    });
-    reader.on('error', function (err) {
-        log.error(err.stack)
-    });
+    const files = ctx.request.files.file; // 获取上传文件
+    let filePath = './public/upload/';
+    let imageList = handleImageFile(filePath,files);
+    log.info("postImage上传的图片路径数组为："+ imageList);
 };
 
 const user = {

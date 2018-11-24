@@ -33,6 +33,8 @@
         </div>
       </div>
     </div>
+    <x-button @click.native="handleMultiUpload"
+              type="primary" v-show="false">上传图片测试</x-button>
   </div>
 </template>
 <script>
@@ -57,39 +59,32 @@ export default {
   },
   methods: {
     async send () {
-      let momentId = "";
       if (this.uploadImgList.length <= 0 || this.uploadImgList.length >= 9) {
         alert("too little or too much !!");
         return;
       }
+      let fd = new FormData();
       for (let i = 0, total = this.uploadImgList.length; i < total; i++) {
-        let params = new URLSearchParams();
-        params.append("username", this.loginMan.username);
-        params.append("imageData", this.uploadImgList[i]);
-        params.append("message", this.momentMessage);
-        params.append("total", total);
-        params.append("current", i + 1);
-        params.append("momentId", momentId);
-        console.log(momentId);
-        let responseValue = await addMoment(params);
-        console.log(responseValue);
-        let { status, data } = responseValue;
+        let blob = this.getBlobByBase64(this.uploadImgList[i]);
+        fd.append('file', blob, Date.now() + '.jpg')
+      }
+      fd.append("message", this.momentMessage);
+      fd.append("username", this.loginMan.username);
+      let responseValue = await addMoment(fd);
+      console.log(responseValue);
+      let { status, data } = responseValue;
 
-        momentId = data.data.momentId;
-
-        if (status !== 200) {
-          throw data.msg || "发表异常";
+      momentId = data.data.momentId;
+      if (status !== 200) {
+        throw data.msg || "发表异常";
+      } else {
+        if (data.code != 200) {
+          Util.info(this, data.msg)
+          return;
         } else {
-          if (data.code != 200) {
-            Util.info(this,data.msg)
-            return;
-          } else {
-            if (i == total - 1) {
-              Util.info(this,data.data);
-              this.momentMessage = "";
-              this.$router.push(`/main`);
-            }
-          }
+          Util.info(this, data.data);
+          this.momentMessage = "";
+          this.$router.push(`/main`);
         }
       }
       //清空上传数组
@@ -117,6 +112,26 @@ export default {
     },
     closeImg (index) {
       this.uploadImgList.splice(index, 1);
+    },
+    async handleMultiUpload () {
+      //测试图片上传
+      let fd = new FormData();
+      for (let i = 0, total = this.uploadImgList.length; i < total; i++) {
+        let blob = this.getBlobByBase64(this.uploadImgList[i]);
+        fd.append('file', blob, Date.now() + '.jpg')
+      }
+      let reponse = await postImage(fd);
+    },
+    getBlobByBase64 (base64String) {
+      let bytes = window.atob(base64String.split(',')[1]);
+      let ab = new ArrayBuffer(bytes.length);
+      let ia = new Uint8Array(ab);
+      for (let i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i);
+      }
+      //Blob对象
+      let blob = new Blob([ab], { type: 'image/jpeg' }); //type为图片的格式
+      return blob;
     }
   }
 };

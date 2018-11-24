@@ -14,6 +14,6 @@ router.post("/api/user", controller.user.register) //　用户注册
   .post("/api/user/addcomment", controller.comment.addComment) //评论某条moment
   .post("/api/user/comment/commentone", controller.comment.commentOne) //基于某条comment回复
   .get("/api/user/comment", controller.comment.getComment) //获取评论
-  .post("/api/user/postImage", controller.user.postImage)
+  .post("/api/user/postImage", controller.user.postImage)//上传图片
 
 module.exports = router

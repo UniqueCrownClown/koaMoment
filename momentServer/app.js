@@ -40,23 +40,15 @@ app.use(async (ctx, next) => {
         logUtil.logError(ctx, error, ms);
     }
 });
-
-//解析ctx的body
-const bodyparser = require('koa-bodyparser')
-app.use(bodyparser({
-    formLimit: "5mb",
-    jsonLimit: "5mb",
-    textLimit: "5mb",
-    enableTypes: ['json', 'form', 'text']
+//支持formData
+const koaBody = require('koa-body')
+app.use(koaBody({
+    multipart: true,
+    strict  : false,
+    formidable: {
+        maxFileSize: 500*1024*1024    // 设置上传文件大小最大限制，默认5M
+    }
 }))
-
-//const koaBody = require('koa-body')
-// app.use(koaBody({
-//     multipart: true,
-//     formidable: {
-//         maxFileSize: 500*1024*1024    // 设置上传文件大小最大限制，默认5M
-//     }
-// }))
 
 
 //跨域
