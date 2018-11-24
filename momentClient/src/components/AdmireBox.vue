@@ -72,7 +72,10 @@ export default {
       } else {
         if (data.code != 200) {
           Util.info(this, data.msg);
+        } else {
+          Util.info(this, data.msg);
         }
+
       }
     },
   },

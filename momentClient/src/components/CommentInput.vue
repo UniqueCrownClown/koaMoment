@@ -1,23 +1,16 @@
 <template>
-  <div>
-    <x-dialog v-model="commentInput"
-              class="comment-dialog"
-              hide-on-blur>
-      <div class="message-comment-text">
-        <group title="评论个锤子">
-          <x-textarea placeholder="orz~~~~"
-                      v-model="commentText"></x-textarea>
-          <x-button type="primary"
-                    mini
-                    class="message-comment-send"
-                    @click.native="handleCommentInput">发送</x-button>
-        </group>
-      </div>
-    </x-dialog>
+  <div class="message-comment">
+    <div v-show="commentInput"
+         class="message-comment-container">
+      <input placeholder="orz~~~~"
+             class="message-comment-input"
+             v-model="commentText" />
+      <button class="message-comment-send"
+              @click="handleCommentInput">发送</button>
+    </div>
   </div>
 </template>
 <script>
-import { XDialog } from 'vux'
 import { mapState, mapMutations } from "vuex";
 import { addComment } from "../api";
 import Util from "../util/util"
@@ -25,14 +18,14 @@ import vm from "@/event.js";
 export default {
   name: "CommentInput",
   props: ["showCommentInput"],
-  components: {
-    XDialog
-  },
   data () {
     return {
       commentText: "",
     }
   },
+  // mounted () {
+  //   this.setCommentInput(true);
+  // },
   methods: {
     ...mapMutations(["saveComment", "setCommentInput"]),
     async handleCommentInput () {
@@ -41,7 +34,7 @@ export default {
         return;
       }
       let params = new URLSearchParams();
-      params.append("message",  this.commentText);
+      params.append("message", this.commentText);
       params.append("momentid", this.currentCommentData.momentid);
       params.append("belong", this.currentCommentData.belong);
       params.append("source", this.currentCommentData.source);
@@ -54,7 +47,7 @@ export default {
         if (data.code != 200) {
           Util.info(this, data.msg);
         } else {
-          this.commentText ="";
+          this.commentText = "";
           vm.$emit("message", data.data);
         }
       }
@@ -62,12 +55,41 @@ export default {
   },
   computed: {
     ...mapState(["loginMan", "currentCommentData", "commentInput"])
-
   },
 }
 </script>
 <style lang="less" scoped>
-.message-comment-send{
-  cursor: pointer;
+.message-comment {
+  position: fixed;
+  bottom: 6px;
+  padding: 0 10px;
+  width: calc(100% - 20px);
+  .message-comment-container {
+    display: flex;
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px #1aad19;
+    background-color: #eeeeee;
+    .message-comment-input {
+      flex-grow: 1;
+      outline: none;
+      border: none;
+      margin: 10px;
+      background-color: #eeeeee;
+    }
+    .message-comment-send {
+      cursor: pointer;
+      outline: none;
+      width: 80px;
+      margin: 4px;
+      background-color: #ffffff;
+      border: 1px solid #eeeeee;
+      border-radius: 4px;
+      color: #eeeeee;
+      &:hover {
+        background-color: #1aad19;
+        color: #ffffff;
+      }
+    }
+  }
 }
 </style>

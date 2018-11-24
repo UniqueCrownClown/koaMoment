@@ -87,6 +87,10 @@ export default {
   .message-commentItem {
     cursor: pointer;
     text-align: left;
+    text-indent: 10px;
+    &:hover{
+      box-shadow: 0px 0px 2px #1aad19;
+    }
   }
   .huifu-block {
     display: inline-block;
