@@ -1,17 +1,19 @@
 {
-  "name": "momentserver",
+  "name": "tsmomentserver",
   "version": "1.0.0",
-  "description": "a test project of koa",
-  "main": "app.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/server.js",
+    "watch-server": "nodemon --watch src/**/* -e ts,tsx --exec ts-node ./src/server.ts"
   },
-  "author": "clown",
-  "license": "Apache-2.0",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "jsonwebtoken": "^8.3.0",
-    "koa": "2.5.3",
-    "koa-body": "^4.0.4",
+    "jsonwebtoken": "^8.4.0",
+    "koa": "^2.6.2",
+    "koa-body": "^4.0.6",
     "koa-cors": "^0.0.16",
     "koa-jwt": "^3.5.1",
     "koa-onerror": "^4.1.0",
@@ -20,5 +22,16 @@
     "log4js": "^3.0.6",
     "md5": "^2.2.1",
     "monk": "^6.0.6"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.3.0",
+    "@types/koa": "^2.0.48",
+    "@types/koa-cors": "^0.0.0",
+    "@types/koa-router": "^7.0.37",
+    "@types/koa-static": "^4.0.0",
+    "@types/md5": "^2.1.33",
+    "nodemon": "^1.18.9",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
   }
 }

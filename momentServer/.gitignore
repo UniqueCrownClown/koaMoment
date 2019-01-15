@@ -1,4 +1,4 @@
-# Logs
+﻿# Logs
 logs
 *.log
 npm-debug.log*
@@ -60,8 +60,11 @@ typings/
 # next.js build output
 .next
 
-# public Ŀ¼
+# public
 public/
 
 # log dirctory
 log/
+
+# dist dirctory
+dist/
