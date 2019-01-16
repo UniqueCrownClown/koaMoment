@@ -8,6 +8,7 @@ import WriteMoment from '@/view/WriteMoment'
 import MessageBox from '@/components/MessageBox'
 import CommentBox from '@/components/CommentBox'
 import CommentInput from '@/components/CommentInput'
+import NotFound from '@/components/NotFound'
 
 Vue.use(Router)
 
@@ -43,12 +44,21 @@ const router = new Router({
     {
       path: '/commentBox',
       name: 'CommentBox',
-      component:CommentBox
+      component: CommentBox
     },
     {
       path: '/commentInput',
       name: 'CommentInput',
-      component:CommentInput
+      component: CommentInput
+    },
+    {
+      path: "/404",
+      name: "NotFound",
+      component: NotFound
+    },
+    {
+      path: "*", // 此处需特别注意置于最底部
+      redirect: "/404"
     }
   ]
 })

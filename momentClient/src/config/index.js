@@ -1,4 +1,4 @@
 export default {
   IP: 'http://localhost',
-  PORT: 3000,
+  PORT: 3300
 }

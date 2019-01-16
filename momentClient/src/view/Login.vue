@@ -34,43 +34,42 @@
   </div>
 </template>
 <script>
-import { Card } from "vux"
-import { md5 } from 'vux'
-import { login } from "../api"
-import { mapMutations, mapState, mapGetters } from "vuex"
+import { Card, md5 } from 'vux'
+import { login } from '../api'
+import { mapMutations, mapState, mapGetters } from 'vuex'
 import config from '../config'
-import Util from "../util/util"
+import Util from '../util/util'
 
 export default {
-  name: "Login",
+  name: 'Login',
   components: {
     Card
   },
   data () {
     return {
       loginForm: {
-        account: "testa",
-        checkPass: "123456"
+        account: 'testa',
+        checkPass: '123456'
       }
-    };
+    }
   },
   methods: {
-    ...mapMutations(["save", "remove"]),
+    ...mapMutations(['save', 'remove']),
     toRegister () {
       //  路由跳转
-      this.$router.push(`/register`);
+      this.$router.push('/register')
     },
     async handleLogin () {
-      let params = new URLSearchParams();
-      params.append("username", this.loginForm.account);
-      params.append("password", md5(this.loginForm.checkPass));
-      let responseValue = await login(params);
-      let { status, data } = responseValue;
+      let params = new URLSearchParams()
+      params.append('username', this.loginForm.account)
+      params.append('password', md5(this.loginForm.checkPass))
+      let responseValue = await login(params)
+      let { status, data } = responseValue
       if (status !== 200) {
-        throw data.msg || "登录异常";
+        throw data.msg || '登录异常'
       } else {
         if (data.code != 200) {
-          Util.info(this,data.msg);
+          Util.info(this, data.msg)
           return;
         }
         this.save({
@@ -78,12 +77,12 @@ export default {
           username: data.data.username,
           token: data.data.token,
           avatar: data.data.avatar
-        });
-        this.$router.push(`/main`);
+        })
+        this.$router.push('/main')
       }
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @import '~vux/src/styles/close.less';
